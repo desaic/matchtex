@@ -1,0 +1,67 @@
+How to write the FEM paper in this API.
+How to represent materials for Generator.
+Write documentation for the code on the wiki
+Write examples on the wiki 
+Robot example
+Input API:
+Core functions:
+struct Vertex{
+required:
+  vec3 position;
+  etc
+}
+struct triangle{
+required:
+  int [3] index;
+}
+class Mesh{
+required
+  std::vector<Vertex> v;
+  std::vector<Triangle> t;
+optional:
+  unsigned char * texture;
+  etc.  
+}
+set_mesh(class Mesh &){
+  let generator and simulator know about the mesh.
+  Must have points and triangles.
+  Optional. All specified by user:
+  1. class Mesh can contain arbitrary properties
+   for each vertex, triangle, voxel etc.
+  2 .It can also contain any number of 2D or 3D textures
+  defining various properties.
+  3. It can contain constraints represented by functions or 
+   parameters
+}
+
+class scene{
+  vector<Force>
+  vector<Light>
+  vector<Camera>
+}
+
+class Goal{
+  Mesh 
+  or image
+  or list of curves
+  etc.
+}
+
+set_scene_and_goal( List<class scene , class Goal>)  ?
+{
+1.Simulator reads the scene.
+  Scene can contain cameras, lights, forces.
+  Can be interval of parameters in the most general case.
+  
+2 Comparator reads the corresponding goal.
+  Goal can be a deformed mesh or a rendered result,
+  or a more fine-grained specification of the transformation,
+  e.g. rotation, translation.
+}
+
+Optional:
+For convenience , user can choose an existing
+ generator, simulator, comparator
+or optimizer in the input api.
+There can be many more small options.
+
