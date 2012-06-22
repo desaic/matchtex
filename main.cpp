@@ -1,7 +1,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-#include "mesh.hpp"
+#include "mesh.hpp" //glew.h is included before other headers
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
@@ -9,15 +9,21 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "poly.hpp"
 #include <string.h>
 #include <sstream>
+#include <pthread.h>
+#include <iostream>
+#include <string>
+
+#include "poly.hpp"
 #include "mesh_query.h"
-#include <imageio.h>
 #include"quat.h"
 #include "cgd.hpp"
 #include "tetra.hpp"
 #include "voxel.hpp"
+#include "imageio.h"
+
+
 static Mesh * m=0;
 Tetra * tet=0;
 Voxel * vox=0;
@@ -223,17 +229,12 @@ void animate(int t)
 
 }
 
-#include <pthread.h>
-
 extern int minc_nlabel;
 void* iterate(void* arg){
   return 0;
 }
-#include <iostream>
-#include <string>
-#include <sstream>
 
-int main(int argc, char** argv)
+int main1(int argc, char** argv)
 {
   if(argc<2){
     printf("%s options\n",argv[0]);

@@ -61,15 +61,13 @@ namespace Fab {
   };
   class Scene{
   };
-  class Mesh{
+  class Shape{
   };
   class Output{
   };
+  class State{
+  };
   class SearchSpace{
-
-   public:
-    class State{
-    };
   };
 	struct Bound {
 		double mmin, mmax;
@@ -77,36 +75,40 @@ namespace Fab {
 
 	class Simulator {
 	public:
-		virtual Goal simulate(Scene scene) = 0;
+	  virtual void setShape(Shape * Shape) = 0;
+		virtual void setScene(Scene *scene) = 0;
+	  virtual Goal * run();
 	};
 
 	class Metric{
 	public:
-		virtual double compare( Goal constructed, Goal target) = 0;
+		virtual float getError( const Goal & constructed) = 0;
+		Goal goal;
 	};
 
 	class Generator {
 	public:
-		typedef typename SearchSpace::State              State;
-		virtual void initMesh( Mesh m );
+		//typedef typename SearchSpace::State              State;
+		virtual void initShape( const Shape & m )=0;
 		//is this necessary?
 		//virtual void initScene(Scene scene);
-    virtual void setState(State s);
-    virtual Mesh getMesh();
-		virtual Output getOutput();
+    virtual void setState(State s)=0;
+    virtual Shape getShape()=0;
+		virtual Output getOutput()=0;
 		virtual  State            getInitialState() = 0 ;
-		virtual  SearchSpace       getSearchSpace () = 0 ;
+	//	virtual  SearchSpace       getSearchSpace () = 0 ;
 	};
 
 	class Optimizer {
 	public:
-		typedef typename SearchSpace::State              State;
-		virtual void setSearchSpace( SearchSpace searchSpace) = 0;
+//		typedef typename SearchSpace::State              State;
+	//	virtual void setSearchSpace( SearchSpace searchSpace) = 0;
 
     virtual State getState()=0;
-		virtual void run( int step) = 0;
-		virtual void run( double errorThreshold ) = 0;
-		virtual void runStep() = 0;
+		//virtual void run( int step) = 0;
+		//virtual void run( double errorThreshold ) = 0;
+    virtual void run()=0;
+		//virtual void runStep() = 0;
 	};
 
 }

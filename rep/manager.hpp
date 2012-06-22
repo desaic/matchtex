@@ -16,17 +16,18 @@ public:
   void addMetric( Metric * s);
   void addOptimizer( Optimizer * s);
   void addGenerator( Generator * s);
-  void setMesh(Mesh & m);
+  void setShape(Shape & m);
   void addScene(Scene * _scene);
   void addGoal( Goal* _goal);
-  void Run();
+  virtual void run();
+  virtual Output getOutput();
   void SetGoal( Goal * goal);
   void SetLogLevel(int level);
   Params * GetResults();
  private:
   std::vector<Scene*>   scene;
   std::vector<Goal *>   goal;
-  Mesh * mesh;
+  Shape * shape;
   vector< Simulator* >  simulator;
   vector< Metric * >    metric;
   vector< Generator * >   generator;

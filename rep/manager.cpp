@@ -1,5 +1,5 @@
 #include "manager.hpp"
-
+#include <iostream>
 namespace Fab{
 Manager::Manager() {
   m_result = NULL;
@@ -28,15 +28,24 @@ void Manager::addGenerator( Generator * s){
 
 void Manager::addScene(Scene * _scene)
 {
-
+  scene.push_back(_scene);
 }
 
 void Manager::addGoal( Goal* _goal)
 {
+  goal.push_back(_goal);
 
 }
 
 void Manager::SetLogLevel(int level) {
   // To be implemented
 }
+void Manager::run(){
+  std::cout<<"Unimplemented\n";
+}
+Output Manager::getOutput(){
+  std::cout<<"Unimplemented\n";
+  return Output();
+}
+
 }
