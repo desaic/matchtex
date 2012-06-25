@@ -6,8 +6,9 @@
 #include <vector>
 using namespace std;
 namespace Fab {
-/**@brief
-*/
+///@class Manager
+///@brief manages information required by different components of the
+///optimization procedure
 class Manager {
 public:
   Manager();

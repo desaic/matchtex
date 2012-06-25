@@ -1,11 +1,8 @@
-/**
- * @file quat.h
- * @brief A quaternion class.
- *
- * @author Eric Butler (edbutler)
- * @author Zeyang Li (zeyangl)
- */
-
+///@file quat.h
+///@brief A quaternion class.
+///This code is loosely based on quaternion code from Ogre3d (www.ogre3d.org).
+/// @author Eric Butler (edbutler)
+///@author Zeyang Li (zeyangl)
 #ifndef _VEC_QUAT_H_
 #define _VEC_QUAT_H_
 
@@ -13,10 +10,6 @@
 #include "vec.h"
 #include "math.hpp"
 class Mat4;
-
-/*
-   This code is loosely based on quaternion code from Ogre3d (www.ogre3d.org).
- */
 
 class Quat
 {
