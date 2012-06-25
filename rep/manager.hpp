@@ -12,19 +12,18 @@ class Manager {
 public:
   Manager();
   ~Manager();
-  void addSimulator( Simulator * s);
-  void addMetric( Metric * s);
-  void addOptimizer( Optimizer * s);
-  void addGenerator( Generator * s);
-  void setShape(Shape & m);
-  void addScene(Scene * _scene);
-  void addGoal( Goal* _goal);
+  virtual void addSimulator( Simulator * s);
+  virtual void addMetric( Metric * s);
+  virtual void addOptimizer( Optimizer * s);
+  virtual void addGenerator( Generator * s);
+  virtual void setShape(Shape * m);
+  virtual void addScene(Scene * _scene);
+  virtual void addGoal( Goal* _goal);
   virtual void run();
-  virtual Output getOutput();
-  void SetGoal( Goal * goal);
+  virtual Output* getOutput();
   void SetLogLevel(int level);
-  Params * GetResults();
- private:
+ //Params * GetResults();
+protected:
   std::vector<Scene*>   scene;
   std::vector<Goal *>   goal;
   Shape * shape;

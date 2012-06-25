@@ -26,6 +26,11 @@ void Manager::addGenerator( Generator * s){
   generator.push_back(s);
 }
 
+void Manager::setShape(Shape * m)
+{
+  shape=m;
+}
+
 void Manager::addScene(Scene * _scene)
 {
   scene.push_back(_scene);
@@ -43,9 +48,9 @@ void Manager::SetLogLevel(int level) {
 void Manager::run(){
   std::cout<<"Unimplemented\n";
 }
-Output Manager::getOutput(){
+Output* Manager::getOutput(){
   std::cout<<"Unimplemented\n";
-  return Output();
+  return 0;
 }
 
 }

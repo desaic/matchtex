@@ -25,6 +25,7 @@
 
 
 static Mesh * m=0;
+static std::vector<Vec3> points;
 Tetra * tet=0;
 Voxel * vox=0;
 static Quat rot;
@@ -72,7 +73,6 @@ void display(void)
   gluLookAt(cam->eye[0], cam->eye[1],cam->eye[2],
 	    cam->at[0],cam->at[1], cam->at[2],
 	    0.0, 1.0, 0.0);
-
   GLfloat position[] = { 2.0, 2, 2, 1.0 };
   GLfloat position1[] = { -1.0, -1, -1, 1.0 };
 
@@ -105,12 +105,23 @@ void display(void)
  //   tet->draw();
  // }else{
    // m->draw(m->v);
-   vox->draw();
+  // vox->draw();
 //  }
-  glBindFramebuffer(GL_FRAMEBUFFER, m->fbo);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  m->drawCol();
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+ // glBindFramebuffer(GL_FRAMEBUFFER, m->fbo);
+ // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ // m->drawCol();
+ // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+ glDisable(GL_LIGHTING);
+ glColor3f(0,0,0);
+  glBegin(GL_LINES);
+  for(size_t ii=1;ii<points.size();ii++){
+    Vec3 point = points[ii-1];
+    glVertex3f(point[0],point[1],point[2]);
+    point = points[ii];
+    glVertex3f(point[0],point[1],point[2]);
+  }
+  glEnd();
+  glEnable(GL_LIGHTING);
   glPopMatrix();
 
   GLfloat floorCol[4]={1,1,1,1};
@@ -193,11 +204,11 @@ void mouse(int button, int state, int x, int y)
       break;
     case GLUT_UP:
       ldown=0;
-      glBindFramebuffer(GL_FRAMEBUFFER,m->fbo);
-      glFlush();
-      unsigned char buf[4];
-      glReadPixels(x, 720-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buf);
-      glBindFramebuffer(GL_FRAMEBUFFER,0);
+     // glBindFramebuffer(GL_FRAMEBUFFER,m->fbo);
+     // glFlush();
+     // unsigned char buf[4];
+    //  glReadPixels(x, 720-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+    //  glBindFramebuffer(GL_FRAMEBUFFER,0);
       break;
     }
     break;
@@ -233,8 +244,8 @@ extern int minc_nlabel;
 void* iterate(void* arg){
   return 0;
 }
-
-int main1(int argc, char** argv)
+extern int main1(std::vector<Vec3> * points);
+int main(int argc, char** argv)
 {
   if(argc<2){
     printf("%s options\n",argv[0]);
@@ -282,21 +293,21 @@ int main1(int argc, char** argv)
   glewInit();
 
   srand(123456);
-  m=new Mesh (meshfile);
-  vox=new Voxel(*m,gridsize);
-  m->init_select();
-  m->load_shader("shader/vert.glsl","shader/frag.glsl");
-  if(tetPrefix[0]){
-    tet=new Tetra(tetPrefix);
-    m->t=tet->t;
-    m->v=tet->v;
+ /// m=new Mesh (meshfile);
+  //vox=new Voxel(*m,gridsize);
+ // m->init_select();
+ // m->load_shader("shader/vert.glsl","shader/frag.glsl");
+ // if(tetPrefix[0]){
+  //  tet=new Tetra(tetPrefix);
+  //  m->t=tet->t;
+ //   m->v=tet->v;
    // m->rescale();
-    m->compute_norm();
-  }
+ //   m->compute_norm();
+ // }
 
-  if(tex_file[0]){
-    m->load_tex(tex_file);
-  }
+ // if(tex_file[0]){
+ //   m->load_tex(tex_file);
+ // }
   if(run){
     pthread_t thread;
     pthread_create(&thread, 0, iterate,(void*)m);
@@ -307,6 +318,7 @@ int main1(int argc, char** argv)
   //rot=Quat(Vec3(
   //-0.682098 ,-0.501571 ,-0.532136),108.429*3.141592/180);
   ldown=0;
+  main1(&points);
   glutMainLoop();
   return 0;
 }

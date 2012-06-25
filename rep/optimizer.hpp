@@ -77,7 +77,9 @@ namespace Fab {
 	public:
 	  virtual void setShape(Shape * Shape) = 0;
 		virtual void setScene(Scene *scene) = 0;
-	  virtual Goal * run();
+	  virtual Goal * run(){
+	    return 0;
+	  };
 	};
 
 	class Metric{
@@ -89,13 +91,13 @@ namespace Fab {
 	class Generator {
 	public:
 		//typedef typename SearchSpace::State              State;
-		virtual void initShape( const Shape & m )=0;
+		virtual void initShape( const Shape * m )=0;
 		//is this necessary?
 		//virtual void initScene(Scene scene);
-    virtual void setState(State s)=0;
-    virtual Shape getShape()=0;
-		virtual Output getOutput()=0;
-		virtual  State            getInitialState() = 0 ;
+    virtual void setState(const State * s)=0;
+    virtual Shape * getShape()=0;
+		virtual Output * getOutput()=0;
+		virtual  State  *          getInitialState() = 0 ;
 	//	virtual  SearchSpace       getSearchSpace () = 0 ;
 	};
 
@@ -104,7 +106,8 @@ namespace Fab {
 //		typedef typename SearchSpace::State              State;
 	//	virtual void setSearchSpace( SearchSpace searchSpace) = 0;
 
-    virtual State getState()=0;
+    virtual State * getState()=0;
+    virtual void setState(State * state)=0;
 		//virtual void run( int step) = 0;
 		//virtual void run( double errorThreshold ) = 0;
     virtual void run()=0;
