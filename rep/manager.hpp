@@ -3,6 +3,8 @@
 
 #include "optimizer.hpp"
 #include "generator.hpp"
+#include "simulator.hpp"
+#include "metric.hpp"
 #include <vector>
 using namespace std;
 namespace Fab {

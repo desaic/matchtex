@@ -18,6 +18,7 @@
 using namespace std;
 
 namespace Fab {
+
   class Goal{
   };
   class Scene{
@@ -29,22 +30,7 @@ namespace Fab {
   class State{
   };
 
-	class Simulator {
-	public:
-	  virtual void setShape(Shape * Shape) = 0;
-		virtual void setScene(Scene *scene) = 0;
-	  virtual Goal * run(){
-	    return 0;
-	  };
-	};
-
-	class Metric{
-	public:
-		virtual float getError( const Goal & constructed) = 0;
-		Goal goal;
-	};
-
-	class Optimizer {
+  class Optimizer {
 	public:
 //		typedef typename SearchSpace::State              State;
 	//	virtual void setSearchSpace( SearchSpace searchSpace) = 0;
