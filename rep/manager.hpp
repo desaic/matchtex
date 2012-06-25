@@ -2,7 +2,7 @@
 #define __MANAGER__
 
 #include "optimizer.hpp"
-//#include "libobject.h"
+#include "generator.hpp"
 #include <vector>
 using namespace std;
 namespace Fab {
@@ -32,7 +32,6 @@ protected:
   vector< Metric * >    metric;
   vector< Generator * >   generator;
   vector< Optimizer *>  optimizer;
-  Params * m_result;
 };
 }
 #endif

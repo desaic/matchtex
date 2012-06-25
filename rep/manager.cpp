@@ -1,13 +1,12 @@
 #include "manager.hpp"
 #include <iostream>
 namespace Fab{
-Manager::Manager() {
-  m_result = NULL;
+Manager::Manager()
+{
 }
 
-Manager::~Manager() {
-  if (m_result)
-    delete m_result;
+Manager::~Manager()
+{
 }
 
 void Manager::addSimulator( Simulator * s) {
