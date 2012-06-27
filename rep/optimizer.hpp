@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <cstdlib>
 
-#define dprintf(S, ...) fprintf(stderr, S, __VA_ARGS__);
-
 using namespace std;
 
 namespace Fab {
@@ -31,6 +29,7 @@ namespace Fab {
     Triangle * triangle;
     unsigned int nVertex, nTriangle;
     Shape():vertex(0),triangle(0),nVertex(0),nTriangle(0){}
+    virtual void draw(){}
   };
   ///@brief specification of desired behavior of model
   class Goal{

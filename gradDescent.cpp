@@ -1,5 +1,4 @@
 #include "rep/manager.hpp"
-#include "rep/optimizer.hpp"
 #include "math.hpp"
 #include <iostream>
 using namespace Fab;
@@ -28,6 +27,7 @@ public:
   }
 };
 
+///@brief goal is also an array of floats
 class FloatGoal:public Goal{
 public:
   std::vector<float> goal;
@@ -36,6 +36,7 @@ public:
   float &operator[](int idx){return goal[idx];}
 };
 
+///@brief state represented as an array of floats
 class FloatState:public State{
 public:
   FloatState(const FloatState & state){
@@ -48,12 +49,15 @@ public:
   float operator[](int idx)const{return a[idx];}
 };
 
+///@brief a gradient interface that provides
+///function for computing gradient and objective value
 class Gradient{
 public:
   virtual void getGrad(const FloatState & state, std::vector<float>*grad)=0;
   virtual float getObjective(const FloatState & state)=0;
 };
 
+///@brief a general optimizer that uses the Gradient object
 class GradOpt:public Optimizer {
 public:
   FloatState state;

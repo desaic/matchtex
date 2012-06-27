@@ -1,5 +1,5 @@
-#ifndef __MANAGER__
-#define __MANAGER__
+#ifndef MANAGER_HPP
+#define MANAGER_HPP
 
 #include "optimizer.hpp"
 #include "generator.hpp"

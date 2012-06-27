@@ -23,11 +23,11 @@
 #include "voxel.hpp"
 #include "imageio.h"
 
-
+#include "rep/manager.hpp"
 static Mesh * m=0;
-static std::vector<Vec3> points;
 Tetra * tet=0;
 Voxel * vox=0;
+Fab::Shape * shape=0;
 static Quat rot;
 struct Cam{
   Cam():rotx(0),roty(0){
@@ -101,6 +101,9 @@ void display(void)
   //std::cout<<axis[0]<<" "<<axis[1]<<" "<<axis[2]<<"\n";
 
   glRotatef(angle,axis[0],axis[1],axis[2]);
+  if(shape){
+    shape->draw();
+  }
  // if(tet){
  //   tet->draw();
  // }else{
@@ -111,17 +114,6 @@ void display(void)
  // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  // m->drawCol();
  // glBindFramebuffer(GL_FRAMEBUFFER, 0);
- glDisable(GL_LIGHTING);
- glColor3f(0,0,0);
-  glBegin(GL_LINES);
-  for(size_t ii=1;ii<points.size();ii++){
-    Vec3 point = points[ii-1];
-    glVertex3f(point[0],point[1],point[2]);
-    point = points[ii];
-    glVertex3f(point[0],point[1],point[2]);
-  }
-  glEnd();
-  glEnable(GL_LIGHTING);
   glPopMatrix();
 
   GLfloat floorCol[4]={1,1,1,1};
@@ -244,7 +236,7 @@ extern int minc_nlabel;
 void* iterate(void* arg){
   return 0;
 }
-extern int main1(std::vector<Vec3> * points);
+extern int main2(Fab::Shape ** shape);
 int main(int argc, char** argv)
 {
   if(argc<2){
@@ -318,7 +310,7 @@ int main(int argc, char** argv)
   //rot=Quat(Vec3(
   //-0.682098 ,-0.501571 ,-0.532136),108.429*3.141592/180);
   ldown=0;
-  main1(&points);
+  main2(&shape);
   glutMainLoop();
   return 0;
 }
