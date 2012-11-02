@@ -2,7 +2,7 @@ CC = g++
 DFLAG = -O3
 CFLAGS = -Wall $(DFLAG)
 
-INCLUDES = -Iinclude -Irep 
+INCLUDES = -Iinclude 
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
@@ -18,7 +18,7 @@ SRCS := $(wildcard *.cpp )
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
 
 # define the executable file 
-MAIN = match
+MAIN = show
 
 #
 # The following part of the makefile is generic; it can be used to 

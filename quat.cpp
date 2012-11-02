@@ -1,7 +1,10 @@
-///@file quat.cpp
-///@brief A quaternion class.
-/// @author Eric Butler (edbutler)
-///@author Zeyang Li (zeyangl)
+/**
+ * @file quat.cpp
+ * @brief A quaternion class.
+ *
+ * @author Eric Butler (edbutler)
+ * @author Zeyang Li (zeyangl)
+ */
 
 #include "quat.h"
 #include "mat.hpp"

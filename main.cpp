@@ -1,7 +1,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-#include "mesh.hpp" //glew.h is included before other headers
+#include "mesh.hpp"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
@@ -9,25 +9,18 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "poly.hpp"
 #include <string.h>
 #include <sstream>
-#include <pthread.h>
-#include <iostream>
-#include <string>
-
-#include "poly.hpp"
 #include "mesh_query.h"
+#include <imageio.h>
 #include"quat.h"
 #include "cgd.hpp"
 #include "tetra.hpp"
 #include "voxel.hpp"
-#include "imageio.h"
-
-#include "rep/manager.hpp"
 static Mesh * m=0;
 Tetra * tet=0;
 Voxel * vox=0;
-Fab::Shape * shape=0;
 static Quat rot;
 struct Cam{
   Cam():rotx(0),roty(0){
@@ -73,6 +66,7 @@ void display(void)
   gluLookAt(cam->eye[0], cam->eye[1],cam->eye[2],
 	    cam->at[0],cam->at[1], cam->at[2],
 	    0.0, 1.0, 0.0);
+
   GLfloat position[] = { 2.0, 2, 2, 1.0 };
   GLfloat position1[] = { -1.0, -1, -1, 1.0 };
 
@@ -101,19 +95,16 @@ void display(void)
   //std::cout<<axis[0]<<" "<<axis[1]<<" "<<axis[2]<<"\n";
 
   glRotatef(angle,axis[0],axis[1],axis[2]);
-  if(shape){
-    shape->draw();
-  }
  // if(tet){
  //   tet->draw();
  // }else{
    // m->draw(m->v);
-  // vox->draw();
+   vox->draw();
 //  }
- // glBindFramebuffer(GL_FRAMEBUFFER, m->fbo);
- // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- // m->drawCol();
- // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_FRAMEBUFFER, m->fbo);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  m->drawCol();
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
   glPopMatrix();
 
   GLfloat floorCol[4]={1,1,1,1};
@@ -196,11 +187,11 @@ void mouse(int button, int state, int x, int y)
       break;
     case GLUT_UP:
       ldown=0;
-     // glBindFramebuffer(GL_FRAMEBUFFER,m->fbo);
-     // glFlush();
-     // unsigned char buf[4];
-    //  glReadPixels(x, 720-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buf);
-    //  glBindFramebuffer(GL_FRAMEBUFFER,0);
+      glBindFramebuffer(GL_FRAMEBUFFER,m->fbo);
+      glFlush();
+      unsigned char buf[4];
+      glReadPixels(x, 720-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+      glBindFramebuffer(GL_FRAMEBUFFER,0);
       break;
     }
     break;
@@ -232,11 +223,16 @@ void animate(int t)
 
 }
 
+#include <pthread.h>
+
 extern int minc_nlabel;
 void* iterate(void* arg){
   return 0;
 }
-extern int main2(Fab::Shape ** shape);
+#include <iostream>
+#include <string>
+#include <sstream>
+
 int main(int argc, char** argv)
 {
   if(argc<2){
@@ -285,21 +281,21 @@ int main(int argc, char** argv)
   glewInit();
 
   srand(123456);
- /// m=new Mesh (meshfile);
-  //vox=new Voxel(*m,gridsize);
- // m->init_select();
- // m->load_shader("shader/vert.glsl","shader/frag.glsl");
- // if(tetPrefix[0]){
-  //  tet=new Tetra(tetPrefix);
-  //  m->t=tet->t;
- //   m->v=tet->v;
+  m=new Mesh (meshfile);
+  vox=new Voxel(*m,gridsize);
+  m->init_select();
+  m->load_shader("shader/vert.glsl","shader/frag.glsl");
+  if(tetPrefix[0]){
+    tet=new Tetra(tetPrefix);
+    m->t=tet->t;
+    m->v=tet->v;
    // m->rescale();
- //   m->compute_norm();
- // }
+    m->compute_norm();
+  }
 
- // if(tex_file[0]){
- //   m->load_tex(tex_file);
- // }
+  if(tex_file[0]){
+    m->load_tex(tex_file);
+  }
   if(run){
     pthread_t thread;
     pthread_create(&thread, 0, iterate,(void*)m);
@@ -310,7 +306,6 @@ int main(int argc, char** argv)
   //rot=Quat(Vec3(
   //-0.682098 ,-0.501571 ,-0.532136),108.429*3.141592/180);
   ldown=0;
-  main2(&shape);
   glutMainLoop();
   return 0;
 }

@@ -32,7 +32,7 @@ bool trigCubeIntersect(int tidx, const Mesh & m ,
   float boxcenter[3]={mn[0]+(0.5+cube[0])*side_len,
                       mn[1]+(0.5+cube[1])*side_len,
                       mn[2]+(0.5+cube[2])*side_len};
-  float boxhalfsize[3]={side_len/2,side_len/2,side_len/2};
+  float boxhalfsize[3]={side_len/(1.99),side_len/(1.99),side_len/(1.99)};
   float triverts[3][3];
   for(int ii=0;ii<3;ii++){
     for(int jj=0;jj<3;jj++){
@@ -54,9 +54,9 @@ void rasterize(int tidx, Mesh & m , real_t * mn, real_t gridlen, std::set<GridId
   //bounding box of a triangle
   int tmn[3], tmx[3];
   bbox(tidx,m,mn,gridlen,tmn,tmx);
-  for(int ix=tmn[0];ix<=tmx[0];ix++){
-    for(int iy=tmn[1];iy<=tmx[1];iy++){
-      for(int iz=tmn[2];iz<=tmx[2];iz++){
+  for(int ix=tmn[0];ix<=(1+tmx[0]);ix++){
+    for(int iy=tmn[1];iy<=(1+tmx[1]);iy++){
+      for(int iz=tmn[2];iz<=(1+tmx[2]);iz++){
         GridIdx grid(ix,iy,iz);
         if(trigCubeIntersect(tidx,m,grid,mn,gridlen)){
           gridset.insert(grid);
@@ -74,14 +74,14 @@ void bbox(int ii, Mesh & m , real_t * mn, real_t gridlen, int * tmn, int * tmx)
     tmn[jj]=vidx[jj];
     tmx[jj]=vidx[jj];
   }
-  for(int jj=0; jj<3; jj++) {
+  for(int jj=1; jj<3; jj++) {
     vec2grid(m.v[m.t[ii][jj]],mn,gridlen,vidx);
     for(int kk=0; kk<VOXEL_DIM; kk++) {
       if(vidx[kk]<tmn[kk]) {
         tmn[kk]=vidx[kk];
       }
       if(vidx[kk]>tmx[kk]) {
-        tmx[jj]=vidx[kk];
+        tmx[kk]=vidx[kk];
       }
     }
   }
